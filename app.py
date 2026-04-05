@@ -125,27 +125,20 @@ def parse_date_range(date_str):
 st.markdown('<h1 class="custom-title">Demo Vessel Operations Analysis</h1>', unsafe_allow_html=True)
 st.markdown("---")
 
-# File uploader
-uploaded_file = st.file_uploader(
-    "📤 Upload Latest Excel Export", 
-    type=["xlsx"],
-    help="Export from Niriis Shipping and upload here (.xlsx format only)"
-)
 
-# Initialize session state for data persistence
-if 'df' not in st.session_state:
-    st.session_state.df = pd.DataFrame()
+# =============================================
+# LOAD DEMO DATA AUTOMATICALLY
+# =============================================
 
-# Process uploaded file
-if uploaded_file:
-    st.session_state.df = load_data(uploaded_file)
+@st.cache_data
+def load_demo_data():
+    return load_data("Demo_Payments_Report_SOA.xlsx")
 
-# Stop app if no data loaded
-if st.session_state.df.empty:
-    st.warning("Please upload an Excel file to begin")
-    st.stop()
+df = load_demo_data()
 
-df = st.session_state.df
+# Optional: small info message (nice UX)
+st.info("This is a demo version using anonymized data for demonstration purposes.")
+
 
 # =============================================
 # SIDEBAR FILTERS
